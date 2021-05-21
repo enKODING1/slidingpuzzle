@@ -1,0 +1,19 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+
+#board{
+    border: 3px solid red;
+ 
+
+ 
+}
+
+
+#board td{
+    border: 1px solid blue;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+}
