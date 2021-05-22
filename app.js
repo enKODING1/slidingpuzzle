@@ -1,23 +1,28 @@
-var Xlen = 4;
-var Ylen = 4;
+var Xlen = 3;
+var Ylen = 3;
 var puzzArr = new Array(Xlen);
 var arr = new Array();
 const SIZE = Xlen*Ylen;
 var blank = SIZE - 1;
 var board = document.getElementById('board');
+var count = 0;
+
 
 //텍스트를 html요소로 변환시켜주는 함수
 function inputHTML(element, data) {
     element.innerHTML = data;
     document.body.appendChild(element);
 }
+
 //퍼즐판을 보여주는 함수
 function updatePuzzle() {
     var html = '';
+    count=0;
     for (let x = 0; x < Xlen; x++) {
         html += "<tr>";
         for (let y = 0; y < Ylen; y++) {
-            html += `<td>${puzzArr[x][y]}</td>`;
+            html += `<td class='number-${count+1}'>${puzzArr[x][y]}</td>`;
+            count++;
         }
         html += "</tr>";
     }
@@ -44,7 +49,6 @@ function initPuzzle() {
     shuffleArray(arr);
 
     //섞은 1차원 배열을 2차원배열에 대입
-    var count = 0;
     for(let x=0; x<Xlen; x++){
         puzzArr[x] = new Array(Ylen);
         for(let y=0; y<Ylen; y++){
@@ -52,17 +56,39 @@ function initPuzzle() {
             count++;
         }
     }
-    
-    console.log(puzzArr);
     updatePuzzle();
 }    
 
-function moveTo(move){
-     
+function array_key(data){
+    var temp = 0;
+    for(let i=0; i<Xlen ; i++){
+        for(let j=0;j<Ylen ; j++){
+            if(puzzArr[i][j] == data){
+                temp = puzzArr[i][j];
+                console.log(`puzzArr[${i}][${j}]`);
+                var Arr_val = {
+                    "key_x":i,
+                    "key_y":j
+                };
+                console.log(Arr_val);
+                return Arr_val;
+                
+            }    
+        }
+    }
 }
 
-initPuzzle();
+//https://oneroomtable.tistory.com/entry/HTML-%EC%9A%94%EC%86%8C-%ED%81%B4%EB%A6%AD%EC%8B%9C-%ED%8A%B9%EC%A0%95-%ED%81%B4%EB%9D%BC%EC%8A%A4class-%EB%98%90%EB%8A%94-%EC%95%84%EC%9D%B4%EB%94%94id-%EC%95%8C%EC%95%84%EB%82%B4%EA%B8%B0
+document.addEventListener('click',function findNode(data){
+    var get_class = data.target.getAttribute('class');
+    var get_el = document.querySelector(`.${get_class}`);
+    array_key(get_el.innerText);
+    console.log(Arr_val.key_x);
+})
 
+
+
+initPuzzle();
 
 
 
