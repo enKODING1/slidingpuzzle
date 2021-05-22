@@ -59,6 +59,7 @@ function initPuzzle() {
     updatePuzzle();
 }
 
+//2차원 배열 index 값을 json형태로 반환
 function array_key(data) {
 
     for (let i = 0; i < Xlen; i++) {
@@ -78,19 +79,26 @@ function array_key(data) {
     }
 }
 
+
 //https://oneroomtable.tistory.com/entry/HTML-%EC%9A%94%EC%86%8C-%ED%81%B4%EB%A6%AD%EC%8B%9C-%ED%8A%B9%EC%A0%95-%ED%81%B4%EB%9D%BC%EC%8A%A4class-%EB%98%90%EB%8A%94-%EC%95%84%EC%9D%B4%EB%94%94id-%EC%95%8C%EC%95%84%EB%82%B4%EA%B8%B0
 document.addEventListener('click', function findNode(data) {
     var get_class = data.target.getAttribute('class');
     var get_el = document.querySelector(`.${get_class}`);
     var json_parse = JSON.parse(array_key(get_el.innerText));
     console.log(json_parse.key_x);
-    move(json_parse.key_x, json_parse.key_y);
+    moveTo(json_parse.key_x, json_parse.key_y);
      
 })
 
-function move(x,y){
-    console.log(`x = ${x}`);
-    console.log(`y=${y}`);
+function moveTo(x,y){
+    const temp = puzzArr[x][y];
+    var json_parse = JSON.parse(array_key(0));
+    if(puzzArr[x][y+1] == 0 || puzzArr[x][y-1] == 0 || puzzArr[x+1][y] == 0 || puzzArr[x-1][y]==0){
+        puzzArr[x][y] = puzzArr[json_parse.key_x][json_parse.key_y];
+        puzzArr[json_parse.key_x][json_parse.key_y] = temp;
+        updatePuzzle();
+    }
+
 }
 
 initPuzzle();
