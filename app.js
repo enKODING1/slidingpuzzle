@@ -2,9 +2,11 @@ var Xlen = 4;
 var Ylen = 4;
 var puzzArr = new Array(Xlen);
 var arr = new Array();
+var test = new Array();
 const SIZE = Xlen * Ylen;
 var board = document.getElementById('board');
 var count = 0;
+
 
 
 //텍스트를 html요소로 변환시켜주는 함수
@@ -55,6 +57,7 @@ function initPuzzle() {
             count++;
         }
     }
+
     updatePuzzle();
 }
 
@@ -78,7 +81,6 @@ function array_key(data) {
     }
 }
 
-
 //https://oneroomtable.tistory.com/entry/HTML-%EC%9A%94%EC%86%8C-%ED%81%B4%EB%A6%AD%EC%8B%9C-%ED%8A%B9%EC%A0%95-%ED%81%B4%EB%9D%BC%EC%8A%A4class-%EB%98%90%EB%8A%94-%EC%95%84%EC%9D%B4%EB%94%94id-%EC%95%8C%EC%95%84%EB%82%B4%EA%B8%B0
 document.addEventListener('click', function findNode(data) {
     var get_class = data.target.getAttribute('class');
@@ -86,23 +88,30 @@ document.addEventListener('click', function findNode(data) {
     var json_parse = JSON.parse(array_key(get_el.innerText));
     console.log(puzzArr[json_parse.key_x][json_parse.key_y]);
     moveTo(json_parse.key_x, json_parse.key_y);
-     
+
 })
 
-function moveTo(x,y){
+function move(x, y, json_parse, temp) {
+    puzzArr[x][y] = puzzArr[json_parse.key_x][json_parse.key_y];
+    puzzArr[json_parse.key_x][json_parse.key_y] = temp;
+    updatePuzzle();
+}
+
+function moveTo(x, y) {
     var temp = puzzArr[x][y];
     var json_parse = JSON.parse(array_key(0));
-    if(puzzArr[x+1][y] == 0 || puzzArr[x-1][y]==0 || puzzArr[x][y+1] == 0 || puzzArr[x][y-1]==0){
-        puzzArr[x][y] = puzzArr[json_parse.key_x][json_parse.key_y];
-        puzzArr[json_parse.key_x][json_parse.key_y] = temp;
-        updatePuzzle();
+
+    //이동가능성 확인
+    if (puzzArr[x - 1][y] == 0) {
+        move(x, y, json_parse, temp);
+    } else if (puzzArr[x][y + 1] == 0) {
+        move(x, y, json_parse, temp);
+    } else if (puzzArr[x + 1][y] == 0) {
+        move(x, y, json_parse, temp);
+    } else if (puzzArr[x][y - 1] == 0) {
+        move(x, y, json_parse, temp);
     }
 
 }
 
 initPuzzle();
-
-
-
-
-
